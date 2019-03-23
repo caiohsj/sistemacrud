@@ -72,7 +72,7 @@ class Usuario {
     	$inserir = $pdo->prepare("INSERT INTO usuarios(nome,email,senha,status) VALUES(:nome,:email,:senha,:status)");
     	$inserir->bindValue(":nome", utf8_encode($this->getNome()));
     	$inserir->bindValue(":email", $this->getEmail());
-    	$inserir->bindValue(":senha", $this->getSenha());
+    	$inserir->bindValue(":senha", $this->getPasswordHash($this->getSenha()));
     	$inserir->bindValue(":status", $this->getStatus());
     	$inserir->execute();
 
@@ -133,6 +133,8 @@ class Usuario {
     public function login($email, $senha)
     {
         $this->loadByEmail($email);
+
+        //Verifica se a senha é válida
         if(password_verify($senha, $this->getSenha())){
             $_SESSION["idUsuario"] = $this->getId();
             $_SESSION["nomeUsuario"] = $this->getNome();
@@ -182,6 +184,45 @@ class Usuario {
         } else {
             return true;
         }
+    }
+
+    public static function logout()
+    {
+        $_SESSION["idUsuario"] = NULL;
+        $_SESSION["nomeUsuario"] = NULL;
+        $_SESSION["emailUsuario"] = NULL;
+        $_SESSION["statusUsuario"] = NULL;
+    }
+
+    public static function getFromSession()
+    {
+        $array = [
+            "id"=>$_SESSION["idUsuario"],
+            "nome"=>$_SESSION["nomeUsuario"],
+            "email"=>$_SESSION["emailUsuario"]
+        ];
+
+        return $array;
+    }
+
+    // Função que recebe o erro
+    public static function setErro($msg)
+    {
+        $_SESSION["erroCadastro"] = $msg;
+    }
+
+    public static function getErro()
+    {
+        $msg = (isset($_SESSION["erroCadastro"])) ? $_SESSION["erroCadastro"] : "";
+
+        Usuario::clearErro();
+
+        return $msg;
+    }
+
+    public static function clearErro()
+    {
+        $_SESSION["erroCadastro"] = NULL;
     }
 
     public function confirmarCadastro($id)

@@ -9,6 +9,8 @@
 <body>
 	<div class="container">
 		<nav class="navbar navbar-dark bg-dark mb-4">
-  			<span class="navbar-brand mb-0 h1">Nome do usuario</span>
+
+
+  			<span class="navbar-brand mb-0 h1"><?php echo htmlspecialchars( $usuario["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?></span>
   			<a class="navbar-brand mb-0 h1" href="/sair">Sair</a>
 		</nav>

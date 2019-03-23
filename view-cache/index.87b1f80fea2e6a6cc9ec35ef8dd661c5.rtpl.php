@@ -12,6 +12,12 @@
 			<h1 class="text-center text-light">Sistema CRUD</h1>
 		</div>
 
+		<?php if( $erro != '' ){ ?>
+		<div class="alert alert-danger" role="alert">
+		  <?php echo htmlspecialchars( $erro, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+		</div>
+		<?php } ?>
+
 		<div class="row">
 			<div class="col-md-4"></div>
 			<div class="col-md-4 ">

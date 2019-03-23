@@ -12,6 +12,12 @@
 			<h1 class="text-center text-light">Sistema CRUD</h1>
 		</div>
 
+		{if="$erro != ''"}
+		<div class="alert alert-danger" role="alert">
+		  {$erro}
+		</div>
+		{/if}
+
 		<div class="row">
 			<div class="col-md-4"></div>
 			<div class="col-md-4 ">

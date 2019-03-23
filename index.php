@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 require_once("vendor/autoload.php");
 
 use \Slim\Slim;
@@ -16,7 +16,9 @@ $app->config("debug", true);
 $app->get("/", function(){
 	$page = new Page(["header"=>false, "footer"=>false]);
 
-	$page->setTpl("index");
+	$page->setTpl("index",[
+		"erro"=>Usuario::getErro()
+	]);
 });
 
 //Rota para abrir o template de cadastro
@@ -48,9 +50,46 @@ $app->post("/cadastro", function(){
 	exit;
 });
 
+//Rota para login
+$app->post("/login", function(){
+	$usuario = new Usuario();
+
+	if($usuario->findByEmail($_POST["email"]) === false){
+		Usuario::setErro("Email ou senha inválidos!");
+    	header("Location: /");
+    	exit;
+	}
+
+	if ($usuario->login($_POST["email"], $_POST["senha"])) {
+		header("Location: /conta");
+		exit;
+	} else {
+		Usuario::setErro("Email ou senha inválidos!");
+		header("Location: /");
+		exit;
+	}
+});
+
+// Rota para abrir a página da conta do usuário, onde está listado os seus lembretes
+$app->get("/conta", function(){
+	$usuario = new Usuario();
+
+	if ($usuario->verifyLogin() === false){
+		header("Location: /");
+		exit;
+	}
+
+	$page = new Page();
+
+	$page->setTpl("conta");
+});
+
 // Rota para deslogar do sistema
 $app->get("/sair", function(){
-	echo "Saindo";
+	Usuario::logout();
+
+	header("Location: /");
+	exit;
 });
 
 $app->run();

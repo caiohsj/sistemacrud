@@ -3,6 +3,7 @@
 namespace Crud;
 
 use Rain\Tpl;
+use Crud\Model\Usuario;
 
 class Page {
 
@@ -32,7 +33,12 @@ class Page {
 
 		if ($this->options['data']) $this->setData($this->options['data']);
 
-		if ($this->options['header'] === true) $this->tpl->draw("header", false);
+		if ($this->options['header'] === true) {
+
+			$this->setTpl("header", [
+				"usuario"=>Usuario::getFromSession()
+			]);
+		}
 
 	}
 

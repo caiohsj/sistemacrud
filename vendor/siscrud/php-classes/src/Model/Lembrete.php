@@ -2,7 +2,6 @@
 namespace Crud\Model;
 
 use Crud\BD\Conexao;
-//require_once("BD/Conexao.php");
 
 class Lembrete {
     private $id;
