@@ -1,6 +1,7 @@
 <?php
-namespace Model;
-//require_once("BD/Conexao.php");
+namespace Crud\Model;
+
+use Crud\BD\Conexao;
 
 class Usuario {
     private $id;
@@ -87,7 +88,7 @@ class Usuario {
         $listar->bindValue(":email",$email);
         $listar->execute();
 
-        $resultado = $listar->fetch(PDO::FETCH_ASSOC);
+        $resultado = $listar->fetch(\PDO::FETCH_ASSOC);
         
         $this->setId($resultado["id"]);
         $this->setNome($resultado["nome"]);
@@ -174,7 +175,7 @@ class Usuario {
         $listar->bindValue(":email",$email);
         $listar->execute();
 
-        $resultado = $listar->fetch(PDO::FETCH_ASSOC);
+        $resultado = $listar->fetch(\PDO::FETCH_ASSOC);
         
         if(empty($resultado)){
             return false;

@@ -11,7 +11,7 @@
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-10">
-				<form method="post" action="../controller/cadastrar-usuario.php">
+				<form method="post" action="/cadastro">
 					<h2 class="mb-3 mt-4">Cadastro</h2>
 					<div class="form-group row">
 					    <label for="inputNome" class="col-sm-1 col-form-label">Nome</label>

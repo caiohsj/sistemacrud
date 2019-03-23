@@ -51,7 +51,7 @@ class Lembrete {
         $listar->bindValue(":fk_usuario",$fk_usuario);
         $listar->execute();
 
-        $lembretes = $listar->fetchAll(PDO::FETCH_ASSOC);
+        $lembretes = $listar->fetchAll(\PDO::FETCH_ASSOC);
         return $lembretes;
     }
 
@@ -66,7 +66,7 @@ class Lembrete {
         $listar->bindValue(":id",$id);
         $listar->execute();
 
-        $resultado = $listar->fetch(PDO::FETCH_ASSOC);
+        $resultado = $listar->fetch(\PDO::FETCH_ASSOC);
         
         $this->setId($resultado["id"]);
         $this->setDescricao($resultado["descricao"]);
