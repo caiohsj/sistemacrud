@@ -26,13 +26,25 @@ $app->get("/cadastro", function(){
 
 	$page = new Page(["header"=>false, "footer"=>false]);
 
-	$page->setTpl("cadastro");
+	$page->setTpl("cadastro",[
+		"erro"=>Usuario::getErro(),
+		"registerValues"=>(isset($_SESSION["registerValues"])) ? $_SESSION["registerValues"] : ["name"=>"","email"=>"", "senha"=>""]
+	]);
 });
 
 // Rota para cadastrar via post
 $app->post("/cadastro", function(){
 	$usuario = new Usuario();
 
+	if($usuario->findByEmail($_POST["email"])){
+		Usuario::setErro("Email inválido!");
+
+		// Colocando na sessão os valores que o usuario digitou na hora do cadastro
+		$_SESSION["registerValues"] = $_POST;
+
+    	header("Location: /cadastro");
+    	exit;
+	}
 
 	// Colocando no objeto os dados do usuario que será cadastrado, que veio via post
 	$usuario->setNome($_POST["nome"]);
@@ -44,6 +56,11 @@ $app->post("/cadastro", function(){
 
 	// Inserindo usuário
 	$usuario->add();
+
+	// Deixando a sessão vazia
+	$_SESSION["registerValues"] = ["nome"=>"", "email"=>"", "senha" => ""];
+
+	//$_SESSION["registerValues"] = "";
 
 	//Redirecionando para página principal
 	header("Location: /");

@@ -16,13 +16,20 @@
 					<div class="form-group row">
 					    <label for="inputNome" class="col-sm-1 col-form-label">Nome</label>
 					    <div class="col-sm-8">
-					    	<input type="text" name="nome" class="form-control" id="inputNome" placeholder="Nome Completo">
+					    	<input type="text" name="nome" class="form-control" id="inputNome" placeholder="Nome Completo" value="<?php echo htmlspecialchars( $registerValues["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
 					    </div>
-					</div>		
+					</div>
+
+					<?php if( $erro != '' ){ ?>
+					<div class="alert alert-danger" role="alert">
+					  <?php echo htmlspecialchars( $erro, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+					</div>
+					<?php } ?>
+
 					<div class="form-group row">
 					    <label for="inputEmail" class="col-sm-1 col-form-label">Email</label>
 					    <div class="col-sm-8">
-					    	<input type="email" name="email" class="form-control" id="inputEmail" placeholder="exemplo@email.com">
+					    	<input type="email" name="email" class="form-control" id="inputEmail" placeholder="exemplo@email.com" value="<?php echo htmlspecialchars( $registerValues["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
 					    </div>
 					</div>
 					<div class="form-group row">
