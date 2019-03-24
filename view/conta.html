@@ -9,18 +9,22 @@
 					    </tr>
 					  </thead>
 					  <tbody>
-					  	
+
+					  	{loop="$lembretes"}
 					    <tr class="row">
-					      <td class="col-md-9 ml-1">Descrição do lembrete</td>
-					      <td class="col-md-1"><a href="/editar">Editar</a></td>
-					      <td class="col-md-1"><a href="/excluir">Excluir</a></td>
+					      <td class="col-md-9 ml-1">{$value.descricao}</td>
+					      <td class="col-md-1"><a href="/lembrete/{$value.id}">Editar</a></td>
+					      <td class="col-md-1"><a href="/lembrete/{$value.id}/excluir" onclick="return confirm('Deseja realmente excluir este registro?')">Excluir</a></td>
 					    </tr>
+					    {/loop}
 					    
+					    {if="$lembretes == ''"}
 					    <tr class="row">
 					    	<td class="col-md-2"></td>
 					     	<td class="col-md-10">Clique no botao +, que está acima, para adicionar um lembrete</td>
 					    </tr>
-					    
+					    {/if}
+
 					  </tbody>
 				</table>
 			</div>

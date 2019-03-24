@@ -41,7 +41,8 @@ class Lembrete {
     /* End Getters and Setters */
 
     // Função que recebe o id do usuario e retorna um array associativo dos dados dos lembretes de determinado usuario
-    public function listByIdUsuario($idusuario){
+    public function listByIdUsuario($fk_usuario)
+    {
         $con = new Conexao();
         //Recebendo a conexao com o bando
         $pdo = $con->getPdo();
@@ -52,6 +53,21 @@ class Lembrete {
 
         $lembretes = $listar->fetchAll(\PDO::FETCH_ASSOC);
         return $lembretes;
+    }
+
+    // Função que recebe o id do lembrete e retorna um array associativo dos dados do lembrete
+    public function listById($id)
+    {
+        $con = new Conexao();
+        //Recebendo a conexao com o bando
+        $pdo = $con->getPdo();
+
+        $listar = $pdo->prepare("SELECT * FROM lembretes WHERE id=:id");
+        $listar->bindValue(":id",$id);
+        $listar->execute();
+
+        $lembrete = $listar->fetch(\PDO::FETCH_ASSOC);
+        return $lembrete;
     }
 
     // Função para colocar "dentro" do objeto os dados do lembrete
@@ -69,12 +85,13 @@ class Lembrete {
         
         $this->setId($resultado["id"]);
         $this->setDescricao($resultado["descricao"]);
-        $this->setUsuarioId($resultado["usuario_id"]);
+        $this->setFkUsuario($resultado["fk_usuario"]);
 
     }
 
     // Função para deletar lembretes, que recebe os dados diretamente do objeto    
-    public function delete(){
+    public function delete()
+    {
         $con = new Conexao();
         //Recebendo a conexao com o bando
         $pdo = $con->getPdo();
@@ -85,7 +102,8 @@ class Lembrete {
     }
 
     // Função para inserir lembretes, que recebe os dados diretamente do objeto
-    public function add(){
+    public function add()
+    {
         $con = new Conexao();
         //Recebendo a conexao com o bando
         $pdo = $con->getPdo();
@@ -97,7 +115,8 @@ class Lembrete {
     }
 
     // Função para atualizar lembretes, que recebe os dados diretamente do objeto
-    public function update(){
+    public function update()
+    {
         $con = new Conexao();
         //Recebendo a conexao com o bando
         $pdo = $con->getPdo();

@@ -72,16 +72,101 @@ $app->post("/login", function(){
 
 // Rota para abrir a página da conta do usuário, onde está listado os seus lembretes
 $app->get("/conta", function(){
-	$usuario = new Usuario();
 
-	if ($usuario->verifyLogin() === false){
+	if (Usuario::verifyLogin() === false){
 		header("Location: /");
 		exit;
 	}
 
+	$lembrete = new Lembrete();
+
 	$page = new Page();
 
-	$page->setTpl("conta");
+	$page->setTpl("conta", [
+		"lembretes"=>$lembrete->listByIdUsuario($_SESSION["idUsuario"])
+	]);
+});
+
+//Rota para abrir o template que insere um lembrete
+$app->get("/adicionar", function(){
+
+	$page = new Page();
+
+	$page->setTpl("adicionarLembrete");
+});
+
+//Rota para inserir um lembrete
+$app->post("/adicionar", function(){
+
+	if (Usuario::verifyLogin() === false){
+		header("Location: /");
+		exit;
+	}
+
+	$lembrete = new Lembrete();
+
+	$lembrete->setDescricao($_POST["descricao"]);
+	$lembrete->setFkUsuario($_SESSION["idUsuario"]);
+
+	$lembrete->add();
+
+	header("Location: /conta");
+	exit;
+
+});
+
+// Rota para excluir um lembrete
+$app->get("/lembrete/:id/excluir", function($id){
+	if (Usuario::verifyLogin() === false){
+		header("Location: /");
+		exit;
+	}
+
+	$lembrete = new Lembrete();
+
+	$lembrete->loadById($id);
+
+	$lembrete->delete();
+
+	header("Location: /conta");
+	exit;
+});
+
+//Rota para abrir o template que edita um lembrete
+$app->get("/lembrete/:id", function($id){
+
+	if (Usuario::verifyLogin() === false){
+		header("Location: /");
+		exit;
+	}
+
+	$lembrete = new Lembrete();
+
+	$page = new Page();
+
+	$page->setTpl("atualizarLembrete",[
+		"lembrete"=>$lembrete->listById($id)
+	]);
+});
+
+//Rota para editar um lembrete
+$app->post("/lembrete/:id", function($id){
+
+	if (Usuario::verifyLogin() === false){
+		header("Location: /");
+		exit;
+	}
+
+	$lembrete = new Lembrete();
+
+	$lembrete->setId($id);
+	$lembrete->setDescricao($_POST["descricao"]);
+	$lembrete->setFkUsuario($_SESSION["idUsuario"]);
+
+	$lembrete->update();
+
+	header("Location: /conta");
+	exit;
 });
 
 // Rota para deslogar do sistema

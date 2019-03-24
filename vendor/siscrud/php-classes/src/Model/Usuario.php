@@ -225,6 +225,7 @@ class Usuario {
         $_SESSION["erroCadastro"] = NULL;
     }
 
+/*
     public function confirmarCadastro($id)
     {
         $con = new Conexao();
@@ -235,4 +236,5 @@ class Usuario {
         $confirmar->bindValue(":id",$id);
         $confirmar->execute();
     }
+*/
 }
