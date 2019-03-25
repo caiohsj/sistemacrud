@@ -16,6 +16,9 @@ $app->config("debug", true);
 $app->get("/", function(){
 	$page = new Page(["header"=>false, "footer"=>false]);
 
+	// Retirando os valores da sessão que guarda os valores dos campos de cadastro caso ocorra um erro
+	$_SESSION["registerValues"] = ["nome"=>"","email"=>"", "senha"=>""];
+
 	$page->setTpl("index",[
 		"erro"=>Usuario::getErro()
 	]);
@@ -26,9 +29,18 @@ $app->get("/cadastro", function(){
 
 	$page = new Page(["header"=>false, "footer"=>false]);
 
+	if (isset($_SESSION["registerValues"]) && $_SESSION["registerValues"] != "")
+	{
+		$_SESSION["registerValues"] = $_SESSION["registerValues"];
+	}
+	else
+	{
+		$_SESSION["registerValues"] = ["nome"=>"","email"=>"", "senha"=>""];
+	}
+
 	$page->setTpl("cadastro",[
 		"erro"=>Usuario::getErro(),
-		"registerValues"=>(isset($_SESSION["registerValues"])) ? $_SESSION["registerValues"] : ["name"=>"","email"=>"", "senha"=>""]
+		"registerValues"=>$_SESSION["registerValues"]
 	]);
 });
 
