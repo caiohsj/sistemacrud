@@ -2,6 +2,7 @@
 namespace Crud\Model;
 
 use Crud\BD\Conexao;
+use Crud\Mailer;
 
 class Usuario {
     private $id;
@@ -9,6 +10,8 @@ class Usuario {
     private $email;
     private $senha;
     private $status;
+
+    const SECRET = "SistemaCrud_Secret";
 
     /* Getters and Setters ------------------------------------------*/
     public function getId()
@@ -95,6 +98,8 @@ class Usuario {
         $this->setEmail($resultado["email"]);
         $this->setSenha($resultado["senha"]);
         $this->setStatus($resultado["status"]);
+
+        return $listar;
 
     }
 
@@ -203,6 +208,24 @@ class Usuario {
         ];
 
         return $array;
+    }
+
+    // Função que envia o email de confirmação de conta
+    public function sentConfirm($email)
+    {
+        $this->loadByEmail($email);
+
+        $code = base64_encode(md5($this->getId()));
+
+        $link = "http://sistemacrud.com.br/usuario/confirm?code=$code";
+
+        $mailer = new Mailer($email, $this->getNome(), "Confirmar Email", "confirm", array(
+            "nome"=>$this->getNome(),
+            "link"=>$link
+        ));
+
+        $mailer->send();
+
     }
 
     // Função que recebe o erro

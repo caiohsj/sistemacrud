@@ -69,6 +69,8 @@ $app->post("/cadastro", function(){
 	// Inserindo usuário
 	$usuario->add();
 
+	$usuario->sentConfirm($_POST["email"]);
+
 	// Deixando a sessão vazia
 	$_SESSION["registerValues"] = ["nome"=>"", "email"=>"", "senha" => ""];
 
