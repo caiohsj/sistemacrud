@@ -28,7 +28,7 @@ class Mailer {
 			$tpl->assign($key, $value);
 		}
 
-		$html = $tpl->draw($tplName);
+		//$html = $tpl->draw($tplName);
 
 		//Create a new PHPMailer instance
 		$this->mail = new \PHPMailer();
@@ -40,7 +40,7 @@ class Mailer {
 		// 0 = off (for production use)
 		// 1 = client messages
 		// 2 = client and server messages
-		$this->mail->SMTPDebug = 0;
+		$this->mail->SMTPDebug = 2;
 
 		//Set the hostname of the mail server
 		$this->mail->Host = 'smtp.gmail.com';
@@ -77,13 +77,13 @@ class Mailer {
 
 		//Read an HTML message body from an external file, convert referenced images to embedded,
 		//convert HTML into a basic plain-text alternative body
-		$this->mail->msgHTML($html);
+		//$this->mail->msgHTML($html);
 
 		//Replace the plain text body with one created manually
 		$this->mail->AltBody = 'This is a plain-text message body';
 
 		//Attach an image file
-		$this->mail->addAttachment('images/phpmailer_mini.png');
+		//$this->mail->addAttachment('images/phpmailer_mini.png');
 
 		
 	}

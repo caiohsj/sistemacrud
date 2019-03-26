@@ -14,6 +14,7 @@ $app->config("debug", true);
 
 // Rota principal
 $app->get("/", function(){
+	
 	$page = new Page(["header"=>false, "footer"=>false]);
 
 	// Retirando os valores da sessão que guarda os valores dos campos de cadastro caso ocorra um erro
@@ -69,11 +70,12 @@ $app->post("/cadastro", function(){
 	// Inserindo usuário
 	$usuario->add();
 
-	$usuario->sentConfirm($_POST["email"]);
+	// Envia o email para confirmar a conta
+	// $usuario->sentConfirm($_POST["email"]);
 
 	// Deixando a sessão vazia
 	$_SESSION["registerValues"] = ["nome"=>"", "email"=>"", "senha" => ""];
-
+	exit;
 	//$_SESSION["registerValues"] = "";
 
 	//Redirecionando para página principal

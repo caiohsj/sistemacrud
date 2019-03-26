@@ -1,7 +1,7 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Sistema CRUD</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">

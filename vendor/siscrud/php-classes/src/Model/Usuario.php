@@ -162,7 +162,7 @@ class Usuario {
         $listar->bindValue(":id",$id);
         $listar->execute();
 
-        $resultado = $listar->fetch(PDO::FETCH_ASSOC);
+        $resultado = $listar->fetch(\PDO::FETCH_ASSOC);
         
         $this->setId($resultado["id"]);
         $this->setNome($resultado["nome"]);
@@ -217,7 +217,7 @@ class Usuario {
 
         $code = base64_encode(md5($this->getId()));
 
-        $link = "http://sistemacrud.com.br/usuario/confirm?code=$code";
+        $link = "http://www.sistemacrud.com.br/usuario/confirm?code=$code";
 
         $mailer = new Mailer($email, $this->getNome(), "Confirmar Email", "confirm", array(
             "nome"=>$this->getNome(),
@@ -226,6 +226,27 @@ class Usuario {
 
         $mailer->send();
 
+    }
+
+    // Função para confirmar conta
+    public function getConfirm($code)
+    {
+        $con = new Conexao();
+        //Recebendo a conexao com o bando
+        $pdo = $con->getPdo();
+
+        $listar = $pdo->prepare("SELECT * FROM usuarios WHERE status=0");
+        $listar->execute();
+
+        $resultado = $listar->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($resultado as $usuario) {
+            // Se o status é 0 e o id é igual ao codigo de confirmação, então é atualizado o status desse usuario
+            if ((int)$usuario["status"] === 0 && md5($usuario["id"]) === $code)
+            {
+                $this->updateStatus($usuario["id"]);
+            }
+        }
     }
 
     // Função que recebe o erro
@@ -248,16 +269,14 @@ class Usuario {
         $_SESSION["erroCadastro"] = NULL;
     }
 
-/*
-    public function confirmarCadastro($id)
+    public function updateStatus($id)
     {
         $con = new Conexao();
         //Recebendo a conexao com o bando
         $pdo = $con->getPdo();
 
-        $confirmar = $pdo->prepare("UPDATE usuarios SET status=1 WHERE id=:id");
-        $confirmar->bindValue(":id",$id);
-        $confirmar->execute();
+        $update = $pdo->prepare("UPDATE usuarios SET status=1 WHERE id=:id");
+        $update->bindValue(":id", $id);
+        $update->execute();
     }
-*/
 }
